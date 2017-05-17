@@ -32,3 +32,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+Assets/_Scene/Office_Scene_Pawel.unity
+Assets/_Scene/Office_Scene_Pawel.unity.meta
+Assets/_Scene/Office_Scene_Konrad.unity
+Assets/_Scene/Office_Scene_Konrad.unity.meta
