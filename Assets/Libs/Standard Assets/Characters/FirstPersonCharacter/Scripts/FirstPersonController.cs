@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Utility;
+using UnityStandardAssets.Utility;
 using Random = UnityEngine.Random;
 
 namespace UnityStandardAssets.Characters.FirstPerson
@@ -42,6 +43,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
 
+
         // Use this for initialization
         private void Start()
         {
@@ -55,6 +57,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Jumping = false;
             m_AudioSource = GetComponent<AudioSource>();
 			m_MouseLook.Init(transform , m_Camera.transform);
+			CrossPlatformInputManager.SwitchActiveInputMethod(CrossPlatformInputManager.ActiveInputMethod.Hardware);
         }
 
 
@@ -62,10 +65,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void Update()
         {
             RotateView();
+
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)
             {
-                m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
+				m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
             }
 
             if (!m_PreviouslyGrounded && m_CharacterController.isGrounded)
@@ -111,6 +115,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             if (m_CharacterController.isGrounded)
             {
+
                 m_MoveDir.y = -m_StickToGroundForce;
 
                 if (m_Jump)
@@ -203,11 +208,23 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void GetInput(out float speed)
         {
-            // Read input
-            float horizontal = CrossPlatformInputManager.GetAxis("Horizontal");
-            float vertical = CrossPlatformInputManager.GetAxis("Vertical");
+            // Read input.
+//			if (GvrController.IsTouching) {
+//				speed = 10f;
+//				m_Input = GvrController.TouchPos;
+//				if (m_Input.sqrMagnitude > 1)
+//				{
+//					m_Input.Normalize();
+//				}
+//				return;
+//			}
 
-            bool waswalking = m_IsWalking;
+			float horizontal = GvrController.TouchDown ? 0f : CrossPlatformInputManager.GetAxis("Horizontal") ;
+			float vertical = GvrController.TouchDown ? 1f :CrossPlatformInputManager.GetAxis("Vertical");           
+
+			Debug.Log ("Unit#: horizontal = " + horizontal + " vertical = " + vertical);
+			bool waswalking = m_IsWalking;
+
 
 #if !MOBILE_INPUT
             // On standalone builds, walk/run speed is modified by a key press.
@@ -215,9 +232,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
 			m_IsWalking = !Input.GetKey(KeyCode.LeftShift);
 #endif
 
+//			Debug.Log ("Unit#: Is Touching = " + GvrController.IsTouching + " X = " + GvrController.TouchPos.x + " Y = " + GvrController.TouchPos.y);
+//			Debug.Log ("Unit#: x_accel = " + GvrController.Accel.x + " y_accel = " + GvrController.Accel.y + " z_accel = " + GvrController.Accel.z);
             // set the desired speed to be walking or running
             speed = m_IsWalking ? m_WalkSpeed : m_RunSpeed;
-            m_Input = new Vector2(horizontal, vertical);
+			m_Input =  new Vector2(horizontal, vertical);
 
             // normalize input if it exceeds 1 in combined length:
             if (m_Input.sqrMagnitude > 1)
