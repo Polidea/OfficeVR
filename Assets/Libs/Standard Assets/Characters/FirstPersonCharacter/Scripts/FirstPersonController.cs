@@ -57,6 +57,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Jumping = false;
             m_AudioSource = GetComponent<AudioSource>();
 			m_MouseLook.Init(transform , m_Camera.transform);
+
 			CrossPlatformInputManager.SwitchActiveInputMethod(CrossPlatformInputManager.ActiveInputMethod.Hardware);
         }
 
@@ -85,6 +86,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
+
+			var controllers = Input.GetJoystickNames ();
+			Debug.Log ("Connected: " + (controllers.Length > 0));
         }
 
 
@@ -219,12 +223,14 @@ namespace UnityStandardAssets.Characters.FirstPerson
 //				return;
 //			}
 
-			float horizontal = GvrController.TouchDown ? 0f : CrossPlatformInputManager.GetAxis("Horizontal") ;
-			float vertical = GvrController.TouchDown ? 1f :CrossPlatformInputManager.GetAxis("Vertical");           
+
+//			float horizontal = Input.GetAxis("Horizontal") ;
+
+			float horizontal = CrossPlatformInputManager.GetAxis("Horizontal") ;
+			float vertical = CrossPlatformInputManager.GetAxis("Vertical");           
 
 			Debug.Log ("Unit#: horizontal = " + horizontal + " vertical = " + vertical);
 			bool waswalking = m_IsWalking;
-
 
 #if !MOBILE_INPUT
             // On standalone builds, walk/run speed is modified by a key press.
