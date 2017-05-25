@@ -43,6 +43,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
 
+		public Transform vrObject;
+	
 
         // Use this for initialization
         private void Start()
@@ -65,6 +67,15 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Update is called once per frame
         private void Update()
         {
+
+#if UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
+
+
+			Vector3 forward2 = vrObject.TransformDirection (Vector3.forward);
+			float mutiSpeed =  GvrController.ClickButton ? m_WalkSpeed : 0f;
+			m_CharacterController.SimpleMove (forward2 * mutiSpeed);
+			Debug.Log("Unity# : Button State  " +GvrController.ClickButton );
+#else
             RotateView();
 
             // the jump state needs to read here to make sure it is not missed
@@ -89,6 +100,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
 			var controllers = Input.GetJoystickNames ();
 			Debug.Log ("Connected: " + (controllers.Length > 0));
+			#endif
         }
 
 
@@ -102,6 +114,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void FixedUpdate()
         {
+			#if UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
+			return;
+			#else
             float speed;
             GetInput(out speed);
             // always move along the camera forward as it is the direction that it being aimed at
@@ -140,6 +155,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             UpdateCameraPosition(speed);
 
             m_MouseLook.UpdateCursorLock();
+			#endif
         }
 
 
@@ -224,10 +240,13 @@ namespace UnityStandardAssets.Characters.FirstPerson
 //			}
 
 
-//			float horizontal = Input.GetAxis("Horizontal") ;
-
 			float horizontal = CrossPlatformInputManager.GetAxis("Horizontal") ;
 			float vertical = CrossPlatformInputManager.GetAxis("Vertical");           
+
+#if UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
+			horizontal = GvrController.ClickButton ? 0f : horizontal;
+			vertical = GvrController.ClickButton ? 1f :vertical;     
+#endif
 
 			Debug.Log ("Unit#: horizontal = " + horizontal + " vertical = " + vertical);
 			bool waswalking = m_IsWalking;
@@ -238,7 +257,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 			m_IsWalking = !Input.GetKey(KeyCode.LeftShift);
 #endif
 
-//			Debug.Log ("Unit#: Is Touching = " + GvrController.IsTouching + " X = " + GvrController.TouchPos.x + " Y = " + GvrController.TouchPos.y);
+			//			Debug.Log ("Unit#: Is Touching = " + GvrController.ClickButton + " X = " + GvrController.TouchPos.x + " Y = " + GvrController.TouchPos.y);
 //			Debug.Log ("Unit#: x_accel = " + GvrController.Accel.x + " y_accel = " + GvrController.Accel.y + " z_accel = " + GvrController.Accel.z);
             // set the desired speed to be walking or running
             speed = m_IsWalking ? m_WalkSpeed : m_RunSpeed;

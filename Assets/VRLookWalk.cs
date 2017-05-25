@@ -15,6 +15,7 @@ public class VRLookWalk : MonoBehaviour {
 
 
 	private CharacterController cc;
+
 	// Use this for initialization
 	void Start () {
 		cc = GetComponent<CharacterController> ();
@@ -25,8 +26,12 @@ public class VRLookWalk : MonoBehaviour {
 	void Update () {
 	
 		Vector3 forward2 = vrCamera.TransformDirection (Vector3.forward);
-		cc.SimpleMove (forward2 * (true ? speed : 0f));
-		//	Debug.Log("Unity# : MOVING in time " + forward * speed);
+		float mutiSpeed = speed;
+#if UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
+		mutiSpeed =  GvrController.ClickButton ? speed : 0f;
+#endif
+		cc.SimpleMove (forward2 * mutiSpeed);
+		//Debug.Log("Unity# : Button State  " +GvrController.ClickButton );
 
 	}
 }
