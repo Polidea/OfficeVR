@@ -240,6 +240,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
 //			}
 
 
+			if (CrossPlatformInputManager.GetButtonDown("Recenter")) {
+				UnityEngine.VR.InputTracking.Recenter();
+			}
+
 			float horizontal = CrossPlatformInputManager.GetAxis("Horizontal") ;
 			float vertical = CrossPlatformInputManager.GetAxis("Vertical");           
 
