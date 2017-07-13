@@ -1,27 +1,26 @@
-##Polidea's Head Quater Unity model 
-This is a simplified model od Polidea's Head Quater. It was made as a part of [Polidea Labs](https://www.polidea.com/blog/The_launch_of_Polidea_Labs/) project to learn more about capabilities of mobile devices to run Virtual Reality projects.
+## Polidea's Head Quater Unity model
+This is a simplified model of Polidea's headquarters. It was made as a part of [Polidea Labs](https://www.polidea.com/blog/The_launch_of_Polidea_Labs/) initiative aimed at exploring capabilities of mobile devices to run Virtual Reality projects.
 
-##How to use it
-This model is created in Unity Game Engine. For personal use you can download free copy of Unity Engine from [unity store](https://store.unity.com). 
+## How to use it
+This model is created in Unity Game Engine. You can download a free copy of Unity Engine from [unity store](https://store.unity.com) for personal use.
 
-To compile project for mobile device you have to:
+To compile a project for a mobile device you have to:
 
-- In Unity, from `File` menu select `Build Settings`
+- Select `Build Settings` from `File` menu in Unity
 - In `Build Settings` window select `Platform` you wish to build for
-- In `Build Settings` window click `Player Settings` button
-- In `Player Settings` window fill `Bundle Identifier`
-- [iOS] If you like Unit to sign your project you have to specify `Signing team ID` (you can sing app later, in Xcode)
-- After click `Build` Unity will generate `ipa` or `apk` package
+- Click `Player Settings` button in `Build settings` window
+- Fill `Bundle Identifier` in `Player` settings
+- [iOS] If you like Unity to sign your project you have to specify `Signing team ID` (you can sign app later, in Xcode) 
+- After click `Build` Unity will generate ipa or apk package
 
-
-##Supported VR devices
+## Supported VR devices
 - [DayDream](https://vr.google.com/daydream/)
 - [Oculus](https://www.oculus.com/)
 - [Cardboard](https://vr.google.com/cardboard/)
 
-##Releated Article
-- [Blogpost](http://blog.polidea.com)
+## Related Article
+- [Blogpost](https://www.polidea.com/blog/Polidea-Labs-2-Two-Weeks-in-Virtual-Reality/)
 
-##License
+## License
 
 This unity model is available under the MIT license. See the LICENSE file for more info.
